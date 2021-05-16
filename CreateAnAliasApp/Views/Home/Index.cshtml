@@ -1,0 +1,47 @@
+﻿@using CreateAnAliasApp.Models
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById("getNewAliasButton").addEventListener("click", getNewAlias)
+    });
+
+    function getNewAlias() {
+        var url = '/Home/GetNewIdentity';
+
+        $.ajax({
+            type: "Get",
+            url: url,
+            data: param = "",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: successFunc,
+            error: errorFunc
+        });
+    }
+
+    function successFunc(data, status) {
+        var jobj = JSON.parse(data)
+        document.getElementById("personPhoto").src = jobj.imgURL;
+        document.getElementById("NameLabel").innerHTML = jobj.FirstName + " " + jobj.LastName;
+        document.getElementById("GenderLabel").innerHTML = jobj.Gender;
+        document.getElementById("locationLabel").innerHTML = jobj.City + ", " + jobj.State + ", " + jobj.Country;
+    }
+
+    function errorFunc() {
+        alert('error');
+    }
+</script>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Use this app to create a new identity and leave you old life behind!</p>
+    <input type="button" id="getNewAliasButton" value="Get New Identity" />
+    <div id="newIdentityDiv">
+        <img id="personPhoto" />
+        <label id="NameLabel"></label>
+        <label id="GenderLabel"></label>
+        <label id="locationLabel"></label>
+    </div>   
+</div>
